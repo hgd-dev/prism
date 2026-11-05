@@ -1,0 +1,13 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const C=require('../assets/core.js');
+test('query trims and caps input',()=>{assert.equal(C.cleanQuery(' hi   world  '),'hi world');assert.equal(C.cleanQuery('a'.repeat(250)).length,180)});
+test('reject non-web URL schemes',()=>{assert.equal(C.canonicalUrl('javascript:alert(1)'),null);assert.equal(C.canonicalUrl('data:text/html,1'),null);assert.equal(C.canonicalUrl('https://example.org').startsWith('https:'),true)});
+test('news mapping preserves source metadata without invented bias',()=>{const r=C.parseNews({articles:[{title:'Title',url:'https://example.com/story',sourcecountry:'Canada',language:'English',seendate:'20261105000000'}]});assert.equal(r.length,1);assert.equal(r[0].political,'Unrated');assert.equal(r[0].domain,'example.com')});
+test('research mapping labels political orientation inapplicable',()=>{const r=C.parseResearch({results:[{id:'x',display_name:'Paper',doi:'https://doi.org/10.1000/xyz',primary_location:{source:{display_name:'Journal'}},authorships:[]}]});assert.equal(r[0].political,'Not applicable')});
+test('wikipedia mapping generates local language URL',()=>{const r=C.parseReference({query:{search:[{title:'Article',pageid:50,snippet:'<b>search</b> result'}]}},'es');assert.equal(r[0].url,'https://es.wikipedia.org/?curid=50');assert.equal(r[0].excerpt,'search result')});
+test('deduplication uses normalized URL',()=>{const r=C.uniqueResults([{url:'https://example.org/path/'},{url:'https://example.org/path'},{url:'https://elsewhere.net'}]);assert.equal(r.length,2)});
+test('sort newest stable for missing dates',()=>{const r=C.sortResults([{date:'2025-01-01'},{date:'2026-01-01'}],'newest');assert.equal(r[0].date,'2026-01-01')});
+test('text inspector detects candidate claim and quote',()=>{const r=C.inspectText('According to researchers, the result increased by 23% in 2025. “A very lengthy quoted statement that should be inspected.”');assert.equal(r.candidates.length>0,true);assert.equal(r.quotes.length,1)});
+test('text inspector handles empty input',()=>assert.equal(C.inspectText('   '),null));
+test('escapes user-controlled HTML in cards',()=>assert.equal(C.escaped('<script>'), '&lt;script&gt;'));

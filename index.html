@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f7f4">
+  <meta name="description" content="PRISM brings news, research and reference results together in one search.">
+  <title>PRISM — Search, with context.</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/core.js" defer></script>
+  <script src="assets/app.js" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="PRISM home"><span class="brand-mark" aria-hidden="true">◭</span> PRISM<span class="brand-dot">.</span></a>
+      <nav class="topnav" aria-label="Main navigation">
+        <button class="nav-link" id="aboutBtn" type="button">About</button>
+        <a class="nav-link" href="https://github.com/hgd-dev/prism" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="heroTitle">
+        <div class="hero-eyebrow">NEWS / RESEARCH / REFERENCE</div>
+        <h1 id="heroTitle">Search, with <em>context.</em></h1>
+        <p>One place to explore a question through reporting, research, and reference material.</p>
+        <form id="searchForm" class="search-box" role="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.4"></circle><path d="m16 16 4.5 4.5"></path></svg>
+          <input id="query" type="search" name="q" maxlength="180" placeholder="Search a topic or question" aria-label="Search topics" autocomplete="off" required>
+          <button type="submit" class="search-submit">Search <span aria-hidden="true">↗</span></button>
+        </form>
+        <div class="examples"><span>Try:</span><button data-example="artificial intelligence education" type="button">AI in education</button><button data-example="climate change policy" type="button">Climate policy</button><button data-example="housing affordability" type="button">Housing affordability</button></div>
+      </section>
+
+      <section class="results-section" id="resultsSection" aria-live="polite">
+        <div class="section-head"><div><span class="eyebrow">RESULTS</span><h2 id="resultsTitle">Explore</h2><p id="resultsSubtitle">Search across news, academic papers, and Wikipedia.</p></div><span class="status-pill" id="statusPill">Ready</span></div>
+        <div class="toolbar">
+          <div class="tabs" role="tablist" aria-label="Search collections">
+            <button class="tab active" data-tab="all" role="tab" aria-selected="true">All</button>
+            <button class="tab" data-tab="news" role="tab" aria-selected="false">News</button>
+            <button class="tab" data-tab="research" role="tab" aria-selected="false">Research</button>
+            <button class="tab" data-tab="reference" role="tab" aria-selected="false">Reference</button>
+          </div>
+          <div class="toolbar-right"><label class="small-label" for="lang">Language</label><select id="lang" aria-label="Wikipedia language"><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="zh">中文</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="pt">Português</option><option value="ja">日本語</option></select><label class="small-label" for="sort">Order</label><select id="sort"><option value="relevance">Default</option><option value="newest">Newest</option></select></div>
+        </div>
+        <div class="workspace">
+          <div class="main-column">
+            <div id="providerStatus" class="provider-status" hidden></div>
+            <div id="results" class="results-list"><div class="empty-state"><span class="empty-glyph">⌕</span><h3>Your search starts here.</h3><p>Enter a topic above to see results from three collections.</p></div></div>
+            <div class="result-actions"><button id="moreBtn" class="outline-button" type="button" hidden>Show more</button><button id="exportBtn" class="outline-button" type="button" hidden>Export JSON ↓</button></div>
+          </div>
+          <aside class="side-column">
+            <div class="aside-card" id="sourceOverview"><h3>Source overview</h3><p class="aside-intro">Search results by collection.</p><div id="perspectiveSummary" class="source-breakdown">No search yet.</div></div>
+            <div class="aside-card"><h3>Text inspector</h3><p class="aside-intro">Paste an article or op-ed to pick out numbers, quotations, and claims to look into.</p><label class="sr-only" for="articleText">Paste article text</label><textarea id="articleText" placeholder="Paste text here…" rows="6" maxlength="50000"></textarea><button id="inspectBtn" type="button" class="outline-button full-width">Inspect text ↗</button><div id="inspection" class="inspection" aria-live="polite"></div></div>
+            <div class="aside-footnote"><strong>Sources</strong><span>GDELT · OpenAlex · Wikipedia</span><button class="text-link" type="button" id="methodBtn">How results work ↗</button></div>
+          </aside>
+        </div>
+      </section>
+      <section class="method-strip" id="methodology"><span class="eyebrow">ABOUT THE PROJECT</span><div class="method-content"><h2>Different sources.<br>One search.</h2><p>PRISM brings together news coverage, academic writing, and reference entries. Search a topic, compare what turns up, and open the original sources.</p></div></section>
+    </main>
+    <footer><span>PRISM © <span id="year"></span></span><span>An open-source search project.</span></footer>
+  </div>
+  <dialog id="aboutDialog"><div class="dialog-body"><div class="dialog-top"><h2>About PRISM</h2><button id="closeDialog" aria-label="Close information" type="button">✕</button></div><p>PRISM searches three public collections: GDELT for news, OpenAlex for scholarly publications, and Wikipedia for reference articles.</p><p>Results link directly to their original sources. The text inspector looks for useful details in text you paste.</p><p>Search coverage depends on those collections. Requests go directly from your browser to their services.</p><button class="search-submit" id="dismissDialog" type="button">Close</button></div></dialog>
+</body>
+</html>
